@@ -26,6 +26,29 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
         return
 
 
+api_view(['POST'])
+@authentication_classes([CsrfExemptSessionAuthentication])
+@permission_classes([AllowAny])
+def signup_api(request):
+    username  = request.data.get('username', '').strip()
+    email     = request.data.get('email', '').strip()
+    password1 = request.data.get('password1', '')
+    password2 = request.data.get('password2', '')
+ 
+    if not username or not password1:
+        return Response({'success': False, 'error': 'Username and password are required.'}, status=400)
+    if password1 != password2:
+        return Response({'success': False, 'error': 'Passwords do not match.'}, status=400)
+    if len(password1) < 8:
+        return Response({'success': False, 'error': 'Password must be at least 8 characters.'}, status=400)
+    if User.objects.filter(username=username).exists():
+        return Response({'success': False, 'error': 'Username already taken.'}, status=400)
+ 
+    user = User.objects.create_user(username=username, email=email, password=password1)
+    login(request, user)
+    request.session.save()
+    return Response({'success': True, 'username': user.username})
+
 # ─── LOGIN API ────────────────────────────────────────────────────────────────
 @api_view(['POST'])
 @authentication_classes([CsrfExemptSessionAuthentication])
