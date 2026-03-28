@@ -30,9 +30,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',          # MUST be first
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',   # ← serves static files on Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -43,29 +43,41 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'dashboard_project.urls'
 
+# ── CORS ──────────────────────────────────────────────────────────────────────
+# IMPORTANT: CORS_ALLOW_ALL_ORIGINS=True + CORS_ALLOW_CREDENTIALS=True is
+# forbidden by the spec. Must use explicit list when credentials=True.
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS  = False
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    # ← YOUR ACTUAL VERCEL URL (the new one from the browser)
-    "https://student-dashboard-sage-psi.vercel.app",
-    # also allow the generic vercel preview pattern if you redeploy
-    "https://student-dashboard-liard.vercel.app",
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://student-dashboard-sage-psi.vercel.app',
+    'https://student-dashboard-liard.vercel.app',
 ]
- 
+
+# ── CSRF ──────────────────────────────────────────────────────────────────────
+# Django 4+ requires Origin to match this list for all POST requests.
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://student-dashboard-backend-eei8.onrender.com",
-    "https://student-dashboard-sage-psi.vercel.app",
-    "https://student-dashboard-liard.vercel.app",
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://student-dashboard-backend-eei8.onrender.com',
+    'https://student-dashboard-sage-psi.vercel.app',
+    'https://student-dashboard-liard.vercel.app',
 ]
- 
-SESSION_COOKIE_SAMESITE = "None"
+
+# ── SESSION + CSRF COOKIES ────────────────────────────────────────────────────
+# Cross-origin cookies require SameSite=None AND Secure=True.
+# Without these the browser silently blocks the session cookie and every
+# /api/dashboard/ call looks unauthenticated → redirect loop.
+SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SECURE   = True
-CSRF_COOKIE_SAMESITE    = "None"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_AGE      = 86400 * 7      # 7 days
+CSRF_COOKIE_SAMESITE    = 'None'
 CSRF_COOKIE_SECURE      = True
+
+# Use database-backed sessions so they survive Render restarts
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 TEMPLATES = [
     {
@@ -104,16 +116,11 @@ TIME_ZONE     = 'UTC'
 USE_I18N      = True
 USE_TZ        = True
 
-# ── STATIC FILES ──────────────────────────────────────────────────────────────
 STATIC_URL  = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'          # ← FIX: where collectstatic writes
-
-# FIX: only include STATICFILES_DIRS if the folder actually exists
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 _static_dir = BASE_DIR / 'static'
 STATICFILES_DIRS = [_static_dir] if _static_dir.exists() else []
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# ──────────────────────────────────────────────────────────────────────────────
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
