@@ -46,21 +46,25 @@ ROOT_URLCONF = 'dashboard_project.urls'
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS  = False
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'https://student-dashboard-liard.vercel.app',
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    # ← YOUR ACTUAL VERCEL URL (the new one from the browser)
+    "https://student-dashboard-sage-psi.vercel.app",
+    # also allow the generic vercel preview pattern if you redeploy
+    "https://student-dashboard-liard.vercel.app",
 ]
-
+ 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'https://student-dashboard-backend-eei8.onrender.com',
-    'https://student-dashboard-liard.vercel.app',
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://student-dashboard-backend-eei8.onrender.com",
+    "https://student-dashboard-sage-psi.vercel.app",
+    "https://student-dashboard-liard.vercel.app",
 ]
-
-SESSION_COOKIE_SAMESITE = 'None'
+ 
+SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE   = True
-CSRF_COOKIE_SAMESITE    = 'None'
+CSRF_COOKIE_SAMESITE    = "None"
 CSRF_COOKIE_SECURE      = True
 
 TEMPLATES = [

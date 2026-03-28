@@ -4,7 +4,9 @@ import ParticleCanvas from "../components/ParticleCanvas";
 import AnimatedLogo   from "../components/AnimatedLogo";
 import Reveal         from "../components/Reveal";
 
-const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+const API_BASE = process.env.REACT_APP_API_URL
+  ? process.env.REACT_APP_API_URL.replace(/\/$/, "")
+  : "http://127.0.0.1:8000";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -14,7 +16,6 @@ export default function LoginPage() {
   const [shake,   setShake]   = useState(false);
 
   const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
-
   const triggerShake = () => { setShake(true); setTimeout(() => setShake(false), 600); };
 
   const handleSubmit = async (e) => {
@@ -34,7 +35,7 @@ export default function LoginPage() {
       if (json.success) { navigate("/"); }
       else { setError(json.error || "Invalid credentials."); triggerShake(); }
     } catch {
-      setError("Cannot reach the server."); triggerShake();
+      setError(`Cannot reach the server at ${API_BASE}`); triggerShake();
     } finally { setLoading(false); }
   };
 
@@ -80,19 +81,19 @@ export default function LoginPage() {
                 <div style={{ marginBottom:18, padding:"10px 14px", borderRadius:8,
                   background:"rgba(248,113,113,0.08)", border:"1px solid rgba(248,113,113,0.25)",
                   color:"#fca5a5", fontSize:13, display:"flex", alignItems:"center", gap:8 }}>
-                  <span style={{ fontSize:15 }}>⚠</span>{error}
+                  <span>⚠</span>{error}
                 </div>
               )}
               <button type="submit" disabled={loading} style={{
                 width:"100%", padding:"14px", borderRadius:12, border:"none",
-                background: loading ? "rgba(56,189,248,0.25)" : "linear-gradient(135deg, #38bdf8 0%, #818cf8 100%)",
+                background: loading ? "rgba(56,189,248,0.25)" : "linear-gradient(135deg, #38bdf8, #818cf8)",
                 color:"white", fontSize:15, fontWeight:700, fontFamily:"'Courier New', monospace",
                 cursor: loading ? "not-allowed" : "pointer",
                 boxShadow: loading ? "none" : "0 0 36px rgba(56,189,248,0.28)",
                 transition:"transform .15s, box-shadow .15s",
                 display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}
-                onMouseEnter={e=>{ if(!loading){ e.currentTarget.style.transform="scale(1.02)"; e.currentTarget.style.boxShadow="0 0 56px rgba(56,189,248,0.42)"; }}}
-                onMouseLeave={e=>{ e.currentTarget.style.transform="scale(1)"; e.currentTarget.style.boxShadow="0 0 36px rgba(56,189,248,0.28)"; }}>
+                onMouseEnter={e=>{ if(!loading){ e.currentTarget.style.transform="scale(1.02)"; }}}
+                onMouseLeave={e=>{ e.currentTarget.style.transform="scale(1)"; }}>
                 {loading ? <><Spinner />Authenticating…</> : "Sign In →"}
               </button>
             </form>
