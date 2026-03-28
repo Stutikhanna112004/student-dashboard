@@ -53,11 +53,11 @@ function AppShell() {
 
         <nav style={{ display:"flex", flexDirection:"column", gap:4, flex:1 }}>
           {[
-            { to:"/",          label:"🏠 Dashboard" },
-            { to:"/analytics", label:"📊 Analytics"  },
-            { to:"/courses",   label:"📚 Courses"    },
-            { to:"/profile",   label:"👤 Profile"    },
-            { to:"/settings",  label:"⚙️ Settings"   },
+            { to:"/",          label:" Dashboard" },
+            { to:"/analytics", label:" Analytics"  },
+            { to:"/courses",   label:" Courses"    },
+            { to:"/profile",   label:" Profile"    },
+            { to:"/settings",  label:" Settings"   },
           ].map(({ to, label }) => (
             <NavLink key={to} to={to} end={to === "/"}
               style={({ isActive }) => ({

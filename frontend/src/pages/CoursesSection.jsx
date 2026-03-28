@@ -59,7 +59,7 @@ export default function CoursesPage({ data }) {
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           margin: "0 0 8px", fontFamily: "'Courier New', monospace",
         }}>
-          📚 Courses
+           Courses
         </h2>
         <p style={{ color: "#475569", fontSize: 15, margin: "0 0 32px" }}>
           {courses.length} enrolled course{courses.length !== 1 ? "s" : ""}

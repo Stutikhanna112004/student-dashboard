@@ -53,7 +53,7 @@ export default function AnalyticsPage({ data }) {
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           margin: "0 0 8px", fontFamily: "'Courier New', monospace",
         }}>
-          📊 Analytics
+           Analytics
         </h2>
         <p style={{ color: "#475569", fontSize: 15, margin: "0 0 40px" }}>
           Deep dive into your academic performance
