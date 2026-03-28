@@ -48,9 +48,26 @@ export default function CoursesPage({ data }) {
     transition: "border-color .2s",
   };
 
-  return (
-    <div style={{ background: "#050a18", minHeight: "100vh", padding: "60px 5vw 80px" }}>
+  const t = {
+   selectBg: "#0f172a",
+   selectText: "#e2e8f0",
+  };
 
+  const selectStyle = {
+   ...inputBase,
+   background: t.selectBg,
+   color: t.selectText,
+   cursor: "pointer",
+};
+
+  return (
+    <div  style={{ background: "#050a18", minHeight: "100vh", padding: "60px 5vw 80px" }}>
+      <style>{`
+        .edupulse-select option {
+        background: #0f172a;
+       color: #e2e8f0;
+    }
+    `}</style>
       {/* ── HEADING */}
       <Reveal>
         <h2 style={{
@@ -85,9 +102,10 @@ export default function CoursesPage({ data }) {
 
           {/* Sort */}
           <select
+            className="edupulse-select"
             value={sortBy}
             onChange={e => setSortBy(e.target.value)}
-            style={{ ...inputBase, cursor: "pointer" }}
+            style={selectStyle}
           >
             <option value="grade-desc">Grade: High → Low</option>
             <option value="grade-asc">Grade: Low → High</option>
