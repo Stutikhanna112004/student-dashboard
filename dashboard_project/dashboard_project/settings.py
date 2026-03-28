@@ -53,18 +53,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-  
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "https://student-dashboard-1kwhh864h-stutis-projects-5d4a807b.vercel.app"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://student-dashboard-1kwhh864h-stutis-projects-5d4a807b.vercel.app"
 ]
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-SESSION_COOKIE_SAMESITE = "Lax"
-SESSION_COOKIE_SECURE   = False
+
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
 ROOT_URLCONF = 'dashboard_project.urls'
 
 TEMPLATES = [
