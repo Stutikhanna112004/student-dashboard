@@ -58,15 +58,15 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://student-dashboard-1kwhh864h-stutis-projects-5d4a807b.vercel.app"
+    'https://student-dashboard-backend-eei8.onrender.com',
+    'https://student-dashboard-liard.vercel.app',
+    'http://localhost:3000',
 ]
 CORS_ALLOW_CREDENTIALS = True
-
-SESSION_COOKIE_SAMESITE = "None"
-SESSION_COOKIE_SECURE = True
-
-CSRF_COOKIE_SAMESITE = "None"
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SECURE   = True
+CSRF_COOKIE_SAMESITE    = 'None'
+CSRF_COOKIE_SECURE      = True
 ROOT_URLCONF = 'dashboard_project.urls'
 
 TEMPLATES = [

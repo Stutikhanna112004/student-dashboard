@@ -5,3 +5,5 @@ sqlparse==0.5.5
 tzdata==2025.3
 pillow>=10.0
 django-cors-headers==4.9.0
+gunicorn>=21.2         # production WSGI server — Render needs this
+whitenoise>=6.6
