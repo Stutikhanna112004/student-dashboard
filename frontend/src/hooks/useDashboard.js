@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 
-/**
- * Fetches /api/dashboard/ with the logged-in user's username as a query param.
- * This is needed because cross-origin session cookies are unreliable in
- * local dev (Chrome drops SameSite=None cookies without HTTPS).
- *
- * The username is stored in sessionStorage after login (set by LoginPage).
- */
+const API_BASE = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+
 export default function useDashboard() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,25 +9,14 @@ export default function useDashboard() {
 
   useEffect(() => {
     let cancelled = false;
-
-    // Get the username that LoginPage stored after successful login
-    const username = sessionStorage.getItem("edupulse_user");
-    const url = username
-      ? `http://127.0.0.1:8000/api/dashboard/?user=${encodeURIComponent(username)}`
-      : `http://127.0.0.1:8000/api/dashboard/`;
-
-    fetch(url, { credentials: "include" })
+    fetch(`${API_BASE}/api/dashboard/`, { credentials: "include" })
       .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (res.status === 401) { window.location.href = "/login"; return null; }
+        if (!res.ok) throw new Error(`Server error ${res.status}`);
         return res.json();
       })
-      .then((json) => {
-        if (!cancelled) { setData(json); setLoading(false); }
-      })
-      .catch((err) => {
-        if (!cancelled) { setError(err.message); setLoading(false); }
-      });
-
+      .then((json) => { if (!cancelled && json) { setData(json); setLoading(false); } })
+      .catch((err) => { if (!cancelled) { setError(err.message); setLoading(false); } });
     return () => { cancelled = true; };
   }, []);
 

@@ -4,7 +4,7 @@ import ParticleCanvas from "../components/ParticleCanvas";
 import AnimatedLogo   from "../components/AnimatedLogo";
 import Reveal         from "../components/Reveal";
 
-const API = "http://127.0.0.1:8000";
+const API = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -112,6 +112,10 @@ export default function SignupPage() {
                   autoComplete="username" onChange={handleChange} required />
               </Field>
 
+              <Field label="Email">
+                <Input name="email" type="email" value={form.email}
+                  autoComplete="email" onChange={handleChange} required />
+              </Field>
 
               <Field label="Password">
                 <Input name="password1" type="password" value={form.password1}
